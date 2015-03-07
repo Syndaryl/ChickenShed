@@ -8,10 +8,11 @@ public class ConfigurationHandler {
 	
 	private static Configuration config;
 	
-	public static boolean 	masterDisable,
-							chicksDropFeathers,
-							timedWithEgg,
-							modifyDeathDrops;
+	public static boolean
+		masterDisable,
+		chicksDropFeathers,
+		timedWithEgg,
+		modifyDeathDrops;
 	
 	public static int configurableTimeForEachFeather;
 	
