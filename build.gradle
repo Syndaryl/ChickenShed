@@ -16,6 +16,8 @@ buildscript {
 }
 
 apply plugin: 'forge'
+// define the properties file
+ext.configFile = file "build.properties"
 
 version = config.mod_version
 group= "vazkii.chickenshed" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -32,22 +34,29 @@ minecraft {
     {
         runDir = "assets"
     }
-
-        replaceIn "BiomesOPlenty.java"
-            replace "1.42.666.42.1", config.forge_version
 }
+
+// add some stuff to the version
+version = "${config.minecraft_version}-${config.mod_version}.Syndaryl"
+
 processResources
 {
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
+	include 'build.properties'
                 
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        // replaces
+        expand ([
+            'modid': project.archivesBaseName,
+            'mod_version': config.mod_version,
+            'minecraft_version': config.minecraft_version
+        ])
     }
         
-    // copy everything else, thats not the mcmod.info
+    // copy everything else, thats we didnt do before
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+        exclude 'build.properties'
     }
 }
