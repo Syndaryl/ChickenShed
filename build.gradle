@@ -11,7 +11,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.1-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
     }
 }
 
@@ -19,12 +19,12 @@ apply plugin: 'forge'
 // define the properties file
 ext.configFile = file "build.properties"
 
-version = config.mod_version
+version = "1.1.2"
 group= "vazkii.chickenshed" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ChickenShed"
 
 minecraft {
-    version = config.minecraft_version + "-" + config.forge_version // grab latest forge
+    version = "1.7.10" + "-" + "10.13.1.1224"
     //assetDir = "run/assets" // don't use this any more, since we're in a multiproject setup.
     // instead look somewhere sensible
     if (file('../run').exists()) {
@@ -35,28 +35,18 @@ minecraft {
         runDir = "assets"
     }
 }
-
-// add some stuff to the version
-version = "${config.minecraft_version}-${config.mod_version}.Syndaryl"
-
 processResources
 {
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-	include 'build.properties'
                 
-        // replaces
-        expand ([
-            'modid': project.archivesBaseName,
-            'mod_version': config.mod_version,
-            'minecraft_version': config.minecraft_version
-        ])
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
     }
         
-    // copy everything else, thats we didnt do before
+    // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
-        exclude 'build.properties'
     }
 }
